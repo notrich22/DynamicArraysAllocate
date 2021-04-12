@@ -3,6 +3,9 @@ using namespace std;
 
 #define tab "\t"
 
+int* allocate(const int n);
+int** allocate(const int m, const int n);
+void clear(int** arr, const int n, const int m);
 void FillRand(int arr[], const int n);
 void FillRand(int** arr, const int m, const int n);
 void Print(int arr[], const int n);
@@ -35,22 +38,11 @@ void main()
 #ifdef DYNAMIC_MEMORY_1
 	int n;
 	cout << "Введите размер массива: "; cin >> n;
-	int* arr = new int[n] {};
+	int* arr = allocate(n);
 	FillRand(arr, n);
 	Print(arr, n);
 	int value;
 	cout << "Введите добавляемое значение: "; cin >> value;
-#ifdef PUSH_BACK
-	int* buffer = new int[n + 1]{};
-	for (int i = 0; i < n; i++)
-	{
-		buffer[i] = arr[i];
-	}
-	delete[] arr;
-	arr = buffer;
-	arr[n] = value;
-	n++;
-#endif // PUSH_BACK
 	push_back(arr, n, value);
 	Print(arr, n);
 
@@ -79,11 +71,7 @@ void main()
 	int index;
 	cout << "Введите количество строк: "; cin >> m;
 	cout << "Введите количество элементов строки: "; cin >> n;
-	int** arr = new int* [m];
-	for (int i = 0; i < m; i++)
-	{
-		arr[i] = new int[n] {};
-	}
+	int** arr = allocate(m, n);
 	FillRand(arr, m, n);
 	Print(arr, m, n);
 	cout << "Удаление строки по индексу: " << endl;
@@ -114,11 +102,7 @@ void main()
 	push_col_back(arr, m, n);
 	Print(arr, m, n);
 	//cout << "Строка добавлена" << endl;
-	for (int i = 0; i < m; i++)
-	{
-		delete[] arr[i];
-	}
-	delete[] arr;
+	clear(arr, n, m);
 #endif // DYNAMIC_MEMORY_2
 
 #ifdef DEBUG_ARRAYS
@@ -127,6 +111,29 @@ void main()
 	Print(arr, n);
 #endif // DEBUG_ARRAYS
 
+}
+
+int* allocate(const int n) {
+	int* arr = new int[n] {};
+	cout << endl << "Память выделена!" << endl;
+	return arr;
+}
+int** allocate(const int m, const int n) {
+	int** arr = new int* [m];
+	for (int i = 0; i < m; i++)
+	{
+		arr[i] = new int[n] {};
+	}
+	cout << "Память выделена!" << endl;
+	return arr;
+}
+void clear(int** arr, const int n, const int m) {
+	for (int i = 0; i < m; i++)
+	{
+		delete[] arr[i];
+	}
+	delete[] arr;
+	cout << "Память очищена!" << endl;
 }
 void FillRand(int arr[], const int n)
 {
